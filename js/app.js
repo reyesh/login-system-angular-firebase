@@ -60,8 +60,6 @@ app.controller("LoginCtrl", ["currentAuth", "$scope", "Auth", "$route", function
   // authenticated user or null if not signed in
   $scope.auth = Auth;
 
-  console.log(currentAuth);
-
   $scope.login = function(){
     Auth.$signInAnonymously().then(function(firebaseUser){
         $scope.user = firebaseUser;
@@ -78,7 +76,6 @@ app.controller("LoginCtrl", ["currentAuth", "$scope", "Auth", "$route", function
     $scope.user = firebaseUser;
     //$route.reload();
     console.log("state change");
-    console.log(currentAuth);
   });
 
   //console.log($scope.auth);
@@ -86,7 +83,7 @@ app.controller("LoginCtrl", ["currentAuth", "$scope", "Auth", "$route", function
   //console.log(Auth.$requireSignIn());
 }]);
 
-app.controller("HomeCtrl", ["currentAuth", "$scope", "Auth", function(currentAuth, $scope, Auth) {
+app.controller("HomeCtrl", ["currentAuth", "$scope", "Auth", "$route", function(currentAuth, $scope, Auth, $route) {
   // currentAuth (provided by resolve) will contain the
   // authenticated user or null if not signed in
 
@@ -113,8 +110,9 @@ app.controller("HomeCtrl", ["currentAuth", "$scope", "Auth", function(currentAut
 app.controller("AccountCtrl", ["currentAuth", "$scope", "Auth", "$route", function(currentAuth, $scope, Auth, $route) {
   // currentAuth (provided by resolve) will contain the
   // authenticated user or null if not signed in
+
   $scope.auth = Auth;
-    console.log("In Account Controller");
+    console.log("In Account Controller: "+ currentAuth);
 
   $scope.signOut = function(){
     Auth.$signOut();
@@ -128,7 +126,7 @@ app.controller("AccountCtrl", ["currentAuth", "$scope", "Auth", "$route", functi
     if(firebaseUser === "" || firebaseUser === null){
       $route.reload();
     }  
-  });
+  }); 
 
 }]);
 
