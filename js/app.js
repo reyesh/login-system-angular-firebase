@@ -60,6 +60,87 @@ app.controller("LoginCtrl", ["currentAuth", "$scope", "Auth", "$route", function
   // authenticated user or null if not signed in
   $scope.auth = Auth;
 
+  $scope.signUp = function(){
+
+    firebase.auth().createUserWithEmailAndPassword($scope.email, $scope.password).then(function(){
+
+      console.log("New Account created");
+
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(error.code);
+      console.log(error.message);
+      // ...
+    });
+
+  };
+
+  $scope.GoogleSignUp = function(){
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+
+      console.log(token);
+      console.log(user);
+
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+      console.log(error);
+    });
+
+
+  };
+
+  $scope.FacebookSignUp = function (){
+    
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+      console.log(token);
+      console.log(user);
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+      console.log(error);
+    });
+
+  };
+
+  $scope.GoogleSignOut = function(){
+
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    });
+
+  };
+
   $scope.login = function(){
     Auth.$signInAnonymously().then(function(firebaseUser){
         $scope.user = firebaseUser;
@@ -112,8 +193,8 @@ app.controller("AccountCtrl", ["currentAuth", "$scope", "Auth", "$route", functi
   // authenticated user or null if not signed in
 
   $scope.auth = Auth;
-    console.log("In Account Controller: "+ currentAuth);
-
+    console.log("In Account Controller: ");
+    console.log(currentAuth);
   $scope.signOut = function(){
     Auth.$signOut();
     $route.reload();
